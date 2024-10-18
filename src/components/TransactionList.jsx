@@ -53,8 +53,8 @@ const TransactionList = () => {
   return (
     <>
       <div className="flex flex-col w-[95%] text-zinc-900 items-center justify-center gap-y-5 mb-16 ">
-        <div className="flex w-[92vw] justify-between ">
-          <div>
+        <div className="flex max-[1230px]:w-[92vw] w-[1230px] justify-between gap-2 items-center max-[560px]:flex-col">
+          <div >
             <input
               type="text"
               placeholder="Search transaction"
@@ -62,7 +62,7 @@ const TransactionList = () => {
               onChange={(e) => setSearchTerm(e.target.value)}
             />
           </div>
-          <div className="fixed top-15 right-[3%] z-20">
+          <div className="min-[560px]:fixed top-15 right-[3%] z-20  min-[1300px]:right-[10%]">
             <select
               className="border border-gray-300 rounded-lg py-1 px-3"
               onChange={(e) => setMonth(e.target.value)}
@@ -77,7 +77,7 @@ const TransactionList = () => {
           </div>
         </div>
 
-        <ul className="flex flex-col gap-5 w-full bg-white h-[70vh] overflow-scroll px-5 rounded-xl shadow-[rgba(50,50,93,0.25)_0px_6px_12px_-2px,_rgba(0,0,0,0.3)_0px_3px_7px_-3px]">
+        <ul className="flex flex-col gap-5 max-[1230px]:w-full w-[1230px] bg-white h-[70vh] overflow-scroll px-5 rounded-xl shadow-[rgba(50,50,93,0.25)_0px_6px_12px_-2px,_rgba(0,0,0,0.3)_0px_3px_7px_-3px]">
           <li className="flex w-full text-sm font-bold space-x-10 sticky top-0 bg-white py-3 m-0 z-10">
             <div className="w-[40px] min-w-[40px] text-left">Id</div>
             <div className="w-[250px] min-w-[200px] text-left">Title</div>
@@ -114,7 +114,7 @@ const TransactionList = () => {
           ))}
         </ul>
 
-        <div className="flex w-[92vw] justify-between">
+        <div className="flex max-[1230px]:w-[92vw] w-[1230px] justify-between">
           <div>
             Page No: <span>{pageNum}</span>
           </div>
