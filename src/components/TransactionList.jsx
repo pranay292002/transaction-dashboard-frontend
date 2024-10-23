@@ -20,6 +20,7 @@ const TransactionList = () => {
   const { month, setMonth } = useContext(monthContext);
   const [data, setData] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const [pageNum, setPageNum] = useState(1);
 
   const handleNextPage = () => {
@@ -30,9 +31,11 @@ const TransactionList = () => {
   };
 
   useEffect(() => {
+    setIsLoading(true);
     fetchData(month, searchTerm, pageNum)
       .then((data) => setData(data))
-      .catch((error) => console.error(error));
+      .catch((error) => console.error(error))
+      .finally(() => setIsLoading(false));
   }, [month, searchTerm, pageNum]);
 
   const months = [
@@ -54,7 +57,7 @@ const TransactionList = () => {
     <>
       <div className="flex flex-col w-[95%] text-zinc-900 items-center justify-center gap-y-5 mb-16 ">
         <div className="flex max-[1230px]:w-[92vw] w-[1230px] justify-between gap-2 items-center max-[560px]:flex-col">
-          <div >
+          <div>
             <input
               type="text"
               placeholder="Search transaction"
@@ -87,31 +90,35 @@ const TransactionList = () => {
             <div className="w-[80px] min-w-[80px] text-left">Sold</div>
             <div className="w-[80px] w-[100px] min-w-[100px]">Image</div>
           </li>
-          {data?.transactions.map((transaction, key) => (
-            <li key={key} className="flex text-sm  space-x-10 ">
-              <div className="w-[40px] min-w-[40px] text-left">
-                {transaction.id}
-              </div>
-              <div className="w-[250px] min-w-[200px] text-left">
-                {transaction.title}
-              </div>
-              <div className="w-[350px] min-w-[300px] text-left">
-                {transaction.description}
-              </div>
-              <div className="w-[80px] min-w-[80px] text-left">
-                {transaction.price.toFixed(2)}
-              </div>
-              <div className="w-[80px] min-w-[80px] text-left">
-                {transaction.category}
-              </div>
-              <div className="w-[80px] min-w-[80px] text-left">
-                {transaction.sold ? "Sold" : "Not Sold"}
-              </div>
-              <div className=" w-[100px] min-w-[100px]">
-                <img src={transaction.image} />
-              </div>
-            </li>
-          ))}
+          {isLoading ? (
+            <h3 className="text-center">Loading...</h3>
+          ) : (
+            data?.transactions.map((transaction, key) => (
+              <li key={key} className="flex text-sm  space-x-10 ">
+                <div className="w-[40px] min-w-[40px] text-left">
+                  {transaction.id}
+                </div>
+                <div className="w-[250px] min-w-[200px] text-left">
+                  {transaction.title}
+                </div>
+                <div className="w-[350px] min-w-[300px] text-left">
+                  {transaction.description}
+                </div>
+                <div className="w-[80px] min-w-[80px] text-left">
+                  {transaction.price.toFixed(2)}
+                </div>
+                <div className="w-[80px] min-w-[80px] text-left">
+                  {transaction.category}
+                </div>
+                <div className="w-[80px] min-w-[80px] text-left">
+                  {transaction.sold ? "Sold" : "Not Sold"}
+                </div>
+                <div className=" w-[100px] min-w-[100px]">
+                  <img src={transaction.image} />
+                </div>
+              </li>
+            ))
+          )}
         </ul>
 
         <div className="flex max-[1230px]:w-[92vw] w-[1230px] justify-between">

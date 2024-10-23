@@ -12,7 +12,6 @@ const BarChartComponent = () => {
         `${apiUrl}transactions/bar-chart?month=${month}`
       );
 
-      
       return response.data;
     } catch (error) {
       console.error(error);
@@ -20,12 +19,16 @@ const BarChartComponent = () => {
   };
 
   const [data, setData] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
   const { month, setMonth } = useContext(monthContext);
 
   useEffect(() => {
+    setIsLoading(true);
+
     fetchData(month)
       .then((data) => setData(data))
-      .catch((error) => console.error(error));
+      .catch((error) => console.error(error))
+      .finally(() => setIsLoading(false));
   }, [month]);
 
   return (
@@ -35,23 +38,27 @@ const BarChartComponent = () => {
           Bar Chart Stats -<span>{month}</span>
         </h3>
 
-        {data && (
-          <BarChart
-            dataset={data}
-            xAxis={[
-              {
-                scaleType: "band",
-                dataKey: "range",
-                tickLabelStyle: {
-                  angle: 325,
-                  textAnchor: "end",
-                  fontSize: 12,
+        {isLoading ? (
+          <h3>Loading...</h3>
+        ) : (
+          data && (
+            <BarChart
+              dataset={data}
+              xAxis={[
+                {
+                  scaleType: "band",
+                  dataKey: "range",
+                  tickLabelStyle: {
+                    angle: 325,
+                    textAnchor: "end",
+                    fontSize: 12,
+                  },
                 },
-              },
-            ]}
-            series={[{ dataKey: "count" }]}
-            height={350}
-          />
+              ]}
+              series={[{ dataKey: "count" }]}
+              height={350}
+            />
+          )
         )}
       </div>
     </>

@@ -19,12 +19,16 @@ const PieChartComponent = () => {
   };
 
   const [data, setData] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
   const { month, setMonth } = useContext(monthContext);
 
   useEffect(() => {
+    setIsLoading(true);
+
     fetchData(month)
       .then((data) => setData(data))
-      .catch((error) => console.error(error));
+      .catch((error) => console.error(error))
+      .finally(() => setIsLoading(false));
   }, [month]);
 
   return (
@@ -33,27 +37,31 @@ const PieChartComponent = () => {
         <h3 className="font-bold">
           Pie Chart Stats -<span>{month}</span>
         </h3>
-        {data && (
-          <PieChart
-            margin={{ top: 20 }}
-            series={[
-              {
-                data: data.map((item, key) => {
-                  return { id: key, value: item.items, label: item.category };
-                }),
-              },
-            ]}
-            height={200}
-            slotProps={{
-              legend: {
-                direction: "column",
-                position: { vertical: "middle", horizontal: "right" },
-                labelStyle: {
-                  fontSize: 12,
+        {isLoading ? (
+          <h3>Loading...</h3>
+        ) : (
+          data && (
+            <PieChart
+              margin={{ top: 20 }}
+              series={[
+                {
+                  data: data.map((item, key) => {
+                    return { id: key, value: item.items, label: item.category };
+                  }),
                 },
-              },
-            }}
-          />
+              ]}
+              height={200}
+              slotProps={{
+                legend: {
+                  direction: "column",
+                  position: { vertical: "middle", horizontal: "right" },
+                  labelStyle: {
+                    fontSize: 12,
+                  },
+                },
+              }}
+            />
+          )
         )}
       </div>
     </>

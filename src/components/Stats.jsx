@@ -18,12 +18,15 @@ const Stats = () => {
   };
 
   const [data, setData] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
   const { month, setMonth } = useContext(monthContext);
 
   useEffect(() => {
+    setIsLoading(true);
     fetchData(month)
       .then((data) => setData(data))
-      .catch((error) => console.error(error));
+      .catch((error) => console.error(error))
+      .finally(() => setIsLoading(false));
   }, [month]);
 
   return (
@@ -32,23 +35,26 @@ const Stats = () => {
         <h3 className="font-bold">
           Statistics -<span>{month}</span>
         </h3>
-
-        <ul className="p-5">
-          <li className="flex">
-            <div className="text-left w-[150px]">Total sale</div>{" "}
-            <span className="text-left ">
-              {data?.totalSaleAmount.toFixed(2)}
-            </span>
-          </li>
-          <li className="flex">
-            <div className="text-left w-[150px]">Total sold item</div>{" "}
-            <span className="text-left ">{data?.totalSoldItems}</span>
-          </li>
-          <li className="flex">
-            <div className="text-left w-[150px]">Total not sold item</div>{" "}
-            <span className="text-left ">{data?.totalNotSoldItems}</span>
-          </li>
-        </ul>
+        {isLoading ? (
+          <h3>Loading...</h3>
+        ) : (
+          <ul className="p-5">
+            <li className="flex">
+              <div className="text-left w-[150px]">Total sale</div>{" "}
+              <span className="text-left ">
+                {data?.totalSaleAmount.toFixed(2)}
+              </span>
+            </li>
+            <li className="flex">
+              <div className="text-left w-[150px]">Total sold item</div>{" "}
+              <span className="text-left ">{data?.totalSoldItems}</span>
+            </li>
+            <li className="flex">
+              <div className="text-left w-[150px]">Total not sold item</div>{" "}
+              <span className="text-left ">{data?.totalNotSoldItems}</span>
+            </li>
+          </ul>
+        )}
       </div>
     </>
   );
