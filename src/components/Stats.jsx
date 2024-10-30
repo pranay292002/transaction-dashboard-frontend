@@ -4,6 +4,14 @@ import { monthContext } from "../context/Context";
 
 const apiUrl = import.meta.env.VITE_API_URL_BACKEND;
 
+// Deployed Backend link: VITE_API_URL_BACKEND = https://transaction-dashboard-backend-fppk.onrender.com/api/
+// if backend running locally: VITE_API_URL_BACKEND = http://localhost:5000/api/
+
+// Note: I have deployed the frontend on vercel and backend on render and it is working fine,
+//       but the only the first load for data from backend will take some time because i have deployed it with a free account,
+//       thats why the server will go on sleep if inactive for some time all other things are working fine.
+//       Frontend app link for demo: https://transaction-dashboard-frontend-pranays-projects-ec98c27d.vercel.app/
+
 const Stats = () => {
   const fetchData = async (month) => {
     try {
